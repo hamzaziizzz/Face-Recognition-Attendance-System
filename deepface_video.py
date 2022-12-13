@@ -17,11 +17,8 @@ start_time=time.time() # Starting time of the function to execute attendence onl
 def format_name(name: str) -> str:
     '''Format name to be displayed on video frame
     '''
-    name = name.split('\\')[-1]
-    name = name.split('/')[0]
-    print(name)
+    name = name.split('\\')[-1].split('/')[0]
     attendence_list.add(name)
-    # name = name.split('/')[1]
     return name
 
 # capture video using cv2 and set the video frames to 5.
@@ -114,7 +111,8 @@ def face_recognition(video_capture, db_path):
             
         
         # Display the resulting frame
-        cv2.imshow('Video', frame)
+        # cv2.imshow('Video', frame)
+        yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame +b'\r\n')
 
         # stop recording attendence after 1 minute
         present_time=time.time()
@@ -126,20 +124,26 @@ def face_recognition(video_capture, db_path):
             break
 
 
-def main():
-    '''Main function.
-    '''
-    # Capture video stream
-    video_capture = capture_video()
+# def main():
+#     '''
+#     Main function.
+#     '''
+#     # Capture video stream
+#     video_capture = capture_video()
 
-    # Perform facial recognition
-    face_recognition(video_capture, "D:\\test_io\\Database")
+#     # Perform facial recognition
+#     face_recognition(video_capture, "DATABASE"))
 
-    # Release video capture
-    video_capture.release()
+#     # Release video capture
+#     video_capture.release()
+
+df = pd.DataFrame(attendence_list) # Converting attendence list to pandas dataframe.
+df.to_csv(".\\Attendance-CSV\\attendance.csv", index=False) # saving the attendence in the form of csv file.
 
 
-if __name__ == "__main__":
-    main()
-    df = pd.DataFrame(attendence_list) # Converting attendence list to pandas dataframe.
-    df.to_csv("D:\\test_io\\attendence.csv", index=False) # saving the attendence in the form of csv file.
+
+
+# if __name__ == "__main__":
+#     main()
+#     df = pd.DataFrame(attendence_list) # Converting attendence list to pandas dataframe.
+#     df.to_csv(".\\Attendance-CSV\\attendance.csv", index=False) # saving the attendence in the form of csv file.

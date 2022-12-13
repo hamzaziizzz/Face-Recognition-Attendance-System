@@ -7,14 +7,19 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 </head>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
 
 <style>
     @import url('http://fonts.cdnfonts.com/css/sf-pro-display');
 </style>
 
 <body>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <div id="section-header" data-section-id="header">
         <style>
@@ -37,6 +42,38 @@
             .header .dropdown__trigger {
                 color: #ffffff !important;
             }
+
+            .videos-list ul {
+                margin: 0px;
+                padding: 0px;
+            }
+
+            .videos-list ul li {
+                list-style: none;
+                float: left;
+                width: 19%;
+                margin: 5px;
+                position: relative;
+            }
+
+            .videos-list ul li img {
+                width: 100%;
+                border-radius: 10px;
+                height: 110px;
+            }
+
+            .videos-list ul li span {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                background: rgba(0, 0, 0, .5);
+                padding: 5px 10px;
+                cursor: pointer;
+            }
+
+            .videos-list ul li span svg {
+                color: #fff;
+        }
 
             /* Mobile Header Styles */
             @media (max-width: 767px) {
@@ -87,7 +124,7 @@
                             </style>
 
                             <a class="logo" href="https://www.giindia.com/">
-                                <img class="logo__image" src="img/1641896393771.jpeg" kjb-settings-id="sections_header_blocks_1555988494486_settings_logo" alt="Header Logo">
+                                <img class="logo__image" src="./1641896393771.jpeg" kjb-settings-id="sections_header_blocks_1555988494486_settings_logo" alt="Header Logo">
                             </a>
                         </div>
                     </div>
@@ -97,23 +134,52 @@
 
     <div class="container align-items-center justify-content-center" style="font-family: 'SF Pro Display', sans-serif;">
         <h2 class="display-1 align-middle">Face Recognition App By GRIL Trainees</h2>
-        <form action="/FrontPage" target="_blank">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="file" class="d-none" id="addVideosInput" accept=" video/*">
+                    <button class="btn btn-dark" id="addVideosBtn">Add Videos <i class="fa fa-camera" style="margin: 5px;"></i> </button>
+                </div>
+                <div class="col-md-12">
+                    <div class="video-list">
+                        <ul>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
             <div>
-                <input type="file">
-                <input type="submit" value="Upload Video" class="btn btn-dark" style="margin: 5px;"/>
+                <a href="/activateWebCam" class="btn btn-dark" style="margin: 5px;">Activate Web-camera</a>
+                <!-- <input type="submit" value="Activate Web-camera" class="btn btn-dark" style="margin: 5px;"/> -->
             </div>
             <div>
-                <input type="submit" value="Activate Web-camera" class="btn btn-dark" style="margin: 5px;"/>
-            </div>
-            <div>
-                <a download href="" class="btn btn-dark" style="margin: 5px;"">Download CSV File</a>
+                <a download href="./Attendance-CSV/attendance.csv" class="btn btn-dark" style="margin: 5px;"">Download CSV File</a>
             </div>
             <div>
                 <input type="submit" value="Infer your Input" class="btn btn-dark" style="margin: 5px;"/>
             </div>
-        </form>
+            <div>
+                <h3>Live Streaming</h3>
+                <img src={{ url_for('activateWebCam') }} alt="">
+            </div>
+        </div>
     </div>
 
+    <script type="text/javascript">
+        $('#addVideosBtn').click(function() {
+            $(this).parents().find('#addVideosInput').click();
+        });
+  
+        document.getElementById('addVideosInput').onchange = e => {
+            const file = e.target.files[0];
+            const url = URL.createObjectURL(file);
+            const li = ` <li> <video controls="controls" src=" ${url} " type="video/mp4" width="400px" height="200px"></video>
+                <span><i class="fa fa-trash"></i></span>
+                </li>`
+            $('.video-list ul').append(li);
+        };
+    </script>
 
 </body>
 
